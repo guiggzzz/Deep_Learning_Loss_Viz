@@ -31,10 +31,8 @@ def random_directions_filterwise(model):
 # Main
 # ---------------------------
 if __name__ == "__main__":
-
-    config_name = input(
-        "Entrez le nom du fichier de configuration YAML (sans .yaml): "
-    )
+    config_name = sys.argv[1]
+    print(f"Paramètre reçu : {config_name}")
 
     ROOT_DIR = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..")
