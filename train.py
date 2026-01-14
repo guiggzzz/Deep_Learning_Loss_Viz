@@ -6,8 +6,6 @@ import yaml
 import random
 import numpy as np
 
-# --- Ajouter racine du projet au path ---
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from utils.data import get_cifar10_loader, extract_fixed_batches
 from utils.checkpoint import save_checkpoint
