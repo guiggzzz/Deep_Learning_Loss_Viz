@@ -22,8 +22,6 @@ if __name__ == "__main__":
     config_path = os.path.join(
         ROOT_DIR, "configs", f"{config_name}.yaml"
     )
-    with open(config_path, "r") as f:
-        config = yaml.safe_load(f)
 
     # -------- Paths --------
     input_path = f"../landscape/Z_{config_name}.npy"

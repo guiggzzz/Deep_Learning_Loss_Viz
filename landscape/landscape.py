@@ -46,7 +46,7 @@ if __name__ == "__main__":
     # -------- Paths --------
     checkpoint_path = f"models/{config_name}.pt"
     fixed_batches_path = f"data/fixed_batches.pt"
-    directions_path = f"landscape/directions_{config_name}.pt"
+    directions_path = f"landscape/directions_fixed.pt"
     output_path = f"landscape/Z_{config_name}.npy"
 
     # -------- Hyperparams paysage --------

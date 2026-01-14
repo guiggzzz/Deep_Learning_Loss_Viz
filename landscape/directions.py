@@ -32,7 +32,9 @@ def random_directions_filterwise(model):
 # ---------------------------
 if __name__ == "__main__":
 
-    config_name = input("Entrez le nom du fichier de configuration YAML (sans .yaml): ")
+    config_name = input(
+        "Entrez le nom du fichier de configuration YAML (sans .yaml): "
+    )
 
     ROOT_DIR = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..")
@@ -66,18 +68,25 @@ if __name__ == "__main__":
     model, _ = load_checkpoint(model, checkpoint_path)
     model.eval()
 
-    # -------- Directions --------
-    print("[INFO] Generating filter-wise random directions...")
-    delta = random_directions_filterwise(model)
-    eta   = random_directions_filterwise(model)
-
-    # -------- Save --------
+    # -------- Directions (FIXED) --------
     os.makedirs("landscape", exist_ok=True)
-    directions_path = f"landscape/directions_{config_name}.pt"
+    directions_path = "landscape/directions_fixed.pt"
 
-    torch.save(
-        {"delta": delta, "eta": eta},
-        directions_path
-    )
+    if os.path.exists(directions_path):
+        print("[INFO] Loading fixed directions...")
+        directions = torch.load(directions_path, map_location=device)
+        delta = directions["delta"]
+        eta   = directions["eta"]
+    else:
+        print("[INFO] Generating fixed filter-wise random directions...")
+        torch.manual_seed(0)  # reproductibilité
+        delta = random_directions_filterwise(model)
+        eta   = random_directions_filterwise(model)
 
-    print(f"[INFO] Directions saved to {directions_path}")
+        torch.save(
+            {"delta": delta, "eta": eta},
+            directions_path
+        )
+        print(f"[INFO] Directions saved to {directions_path}")
+
+    print("[INFO] Directions ready (consistent across configs)")
