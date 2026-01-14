@@ -48,7 +48,11 @@ n_fixed_batches = config["dataset"]["n_fixed_batches"]
 epochs = config["training"]["epochs"]
 lr = config["training"]["lr"]
 momentum = config["training"]["momentum"]
+
+# -------- Device --------
 device = config["training"]["device"]
+if device == "cuda" and not torch.cuda.is_available():
+    device = "cpu"
 
 # Model params (LOSS LANDSCAPE)
 model_cfg = config["model"]

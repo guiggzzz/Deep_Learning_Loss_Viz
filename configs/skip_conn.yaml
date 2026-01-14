@@ -20,4 +20,4 @@ training:
   epochs: 5
   lr: 0.1
   momentum: 0.9
-  device: cpu
+  device: cuda
