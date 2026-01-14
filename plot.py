@@ -15,9 +15,7 @@ if __name__ == "__main__":
     config_name = sys.argv[1]
     print(f"Paramètre reçu : {config_name}")
 
-    ROOT_DIR = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..")
-    )
+    ROOT_DIR = os.path.dirname(__file__)
 
     config_path = os.path.join(
         ROOT_DIR, "configs", f"{config_name}.yaml"
@@ -32,7 +30,7 @@ if __name__ == "__main__":
         plots_dir, f"loss_landscape_3D_{config_name}.png"
     )
 
-    # -------- Landscape params (doivent matcher landscape.py) --------
+    # -------- Landscape params (dos.path.join(oivent matcher landscape.py) --------
     alpha_range = (-1.0, 1.0)
     beta_range  = (-1.0, 1.0)
     n_points = 25
