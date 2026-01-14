@@ -9,13 +9,13 @@ if __name__ == "__main__":
 
     if list:
         for config in config_name:
-            subprocess.run(["python", "training/train.py", config])
-            subprocess.run(["python", "landscape/directions.py", config])
-            subprocess.run(["python", "landscape/landscape.py", config])
-            subprocess.run(["python", "landscape/plot.py", config])
+            subprocess.run(["python", "train.py", config])
+            subprocess.run(["python", "directions.py", config])
+            subprocess.run(["python", "landscape.py", config])
+            subprocess.run(["python", "plot.py", config])
 
     else:
-        subprocess.run(["python", "training/train.py", config_name])
-        subprocess.run(["python", "landscape/directions.py", config_name])
-        subprocess.run(["python", "landscape/landscape.py", config_name])
-        subprocess.run(["python", "landscape/plot.py", config_name])
+        subprocess.run(["python", "train.py", config_name])
+        subprocess.run(["python", "directions.py", config_name])
+        subprocess.run(["python", "landscape.py", config_name])
+        subprocess.run(["python", "plot.py", config_name])
