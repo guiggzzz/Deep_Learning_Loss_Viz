@@ -3,10 +3,8 @@ import sys
 import yaml
 import torch
 
-# --- Ajouter racine du projet ---
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from models.architecture import CustomCNN
+from architecture import CustomCNN
 from utils.checkpoint import load_checkpoint
 
 # ---------------------------
