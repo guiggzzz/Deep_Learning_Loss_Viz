@@ -29,9 +29,7 @@ if __name__ == "__main__":
 
     set_seed(42)
 
-    ROOT_DIR = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..")
-    )
+    ROOT_DIR = os.path.dirname(__file__)
 
     config_path = os.path.join(
         ROOT_DIR, "configs", f"{config_name}.yaml"
