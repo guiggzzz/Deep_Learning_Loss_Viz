@@ -22,8 +22,9 @@ def set_params(model, base, delta, eta, alpha, beta):
 # Main
 # ---------------------------
 if __name__ == "__main__":
+    config_name = sys.argv[1]
+    print(f"Paramètre reçu : {config_name}")
 
-    config_name = input("Entrez le nom du fichier de configuration YAML (sans .yaml): ")
 
     ROOT_DIR = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..")

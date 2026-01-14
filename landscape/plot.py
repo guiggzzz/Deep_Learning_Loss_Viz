@@ -12,8 +12,9 @@ import matplotlib.pyplot as plt
 # Main
 # ---------------------------
 if __name__ == "__main__":
+    config_name = sys.argv[1]
+    print(f"Paramètre reçu : {config_name}")
 
-    config_name = input("Entrez le nom du fichier de configuration YAML (sans .yaml): ")
 
     ROOT_DIR = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..")
@@ -24,7 +25,7 @@ if __name__ == "__main__":
     )
 
     # -------- Paths --------
-    input_path = f"../landscape/Z_{config_name}.npy"
+    input_path = f"landscape/Z_{config_name}.npy"
     plots_dir = "plots"
     os.makedirs(plots_dir, exist_ok=True)
 
