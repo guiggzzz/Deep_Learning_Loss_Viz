@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from utils.data import get_cifar10_loader, extract_fixed_batches
 from utils.checkpoint import save_checkpoint
-from models.architecture import CustomCNN
+from architecture import CustomCNN
 
 
 # ---------------------------
