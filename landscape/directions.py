@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     # -------- Directions (FIXED) --------
     os.makedirs("landscape", exist_ok=True)
-    directions_path = "landscape/directions_fixed.pt"
+    directions_path = f"landscape/directions_{config_name}.pt"
 
     if os.path.exists(directions_path):
         print("[INFO] Loading fixed directions...")
