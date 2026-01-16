@@ -5,7 +5,7 @@ import sys, os
 import yaml
 import random
 import numpy as np
-
+from sklearn.metrics import f1_score
 
 from utils.data import get_cifar10_loader, extract_fixed_batches
 from utils.checkpoint import save_checkpoint
@@ -91,28 +91,45 @@ if __name__ == "__main__":
     )
 
     criterion = nn.CrossEntropyLoss()
-
+    f1_history = []
+    loss_history = []
     # ---------------------------
     # Entraînement
     # ---------------------------
     model.train()
-    for epoch in range(epochs):
-        running_loss = 0.0
+for epoch in range(epochs):
+    running_loss = 0.0
+    all_preds = []
+    all_targets = []
 
-        for x, y in train_loader:
-            x, y = x.to(device), y.to(device)
+    for x, y in train_loader:
+        x, y = x.to(device), y.to(device)
 
-            optimizer.zero_grad()
-            logits = model(x)
-            loss = criterion(logits, y)
-            loss.backward()
-            optimizer.step()
+        optimizer.zero_grad()
+        logits = model(x)
+        loss = criterion(logits, y)
+        loss.backward()
+        optimizer.step()
 
-            running_loss += loss.item()
+        running_loss += loss.item()
 
-        avg_loss = running_loss / len(train_loader)
-        print(f"[Epoch {epoch+1}/{epochs}] Loss: {avg_loss:.4f}")
+        preds = torch.argmax(logits, dim=1)
+        all_preds.append(preds.detach().cpu())
+        all_targets.append(y.detach().cpu())
 
+    avg_loss = running_loss / len(train_loader)
+    loss_history.append(avg_loss)
+
+    all_preds = torch.cat(all_preds).numpy()
+    all_targets = torch.cat(all_targets).numpy()
+
+    f1 = f1_score(all_targets, all_preds, average="macro")
+    f1_history.append(f1)
+
+    print(
+        f"[Epoch {epoch+1}/{epochs}] "
+        f"Loss: {avg_loss:.4f} | F1 (macro): {f1:.4f}"
+    )
     # ---------------------------
     # Sauvegarde
     # ---------------------------
