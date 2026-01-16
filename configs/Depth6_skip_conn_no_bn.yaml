@@ -3,15 +3,15 @@ dataset:
   path: data/cifar10
   batch_size: 128
   num_workers: 4
-  n_fixed_batches: 50
+  n_fixed_batches: 5
 
 model:
   name: LandscapeCNN
   # ---- PARAMÈTRES QUI CHANGENT LE LOSS LANDSCAPE ----
-  depth: 3         # profondeur (↑ = plus complexe)
+  depth: 6         # profondeur (↑ = plus complexe)
   width: 64         # largeur
   use_skip: false    # SKIP CONNECTIONS (clé du papier)
-  use_bn: true      # BatchNorm (change la géométrie)
+  use_bn: false      # BatchNorm (change la géométrie)
   activation: relu  # relu | gelu | silu
   dropout: 0.0      # 0.0 | 0.5 → rugosité
 
