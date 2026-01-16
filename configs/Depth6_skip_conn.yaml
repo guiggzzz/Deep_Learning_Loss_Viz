@@ -15,9 +15,10 @@ model:
   activation: relu  # relu | gelu | silu
   dropout: 0.0      # 0.0 | 0.5 → rugosité
 
-
 training:
-  epochs: 5
+  epochs: 15
   lr: 0.1
   momentum: 0.9
+  nesterov=True
+  weight_decay=5e-4
   device: cuda   # if available, else cpu is automatic
