@@ -12,9 +12,10 @@ if __name__ == "__main__":
         ]
     else:
         config_names = [config_name]
-    print(f"Paramètre reçu : {config_name}")
 
     for cfg in config_names:
+        print(f"Paramètre reçu : {cfg}")
+
         subprocess.run(["python", "train.py", cfg])
         subprocess.run(["python", "directions.py", cfg])
         subprocess.run(["python", "landscape.py", cfg])
