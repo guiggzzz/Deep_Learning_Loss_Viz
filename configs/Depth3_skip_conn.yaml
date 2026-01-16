@@ -20,5 +20,5 @@ training:
   lr: 0.1
   momentum: 0.9
   nesterov: true
-  weight_decay: 5e-4
+  weight_decay: 0.0005
   device: cuda   # if available, else cpu is automatic
