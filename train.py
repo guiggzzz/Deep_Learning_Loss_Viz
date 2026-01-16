@@ -82,12 +82,12 @@ if __name__ == "__main__":
     # ---------------------------
     # Optimisation
     # ---------------------------
-    torch.optim.SGD(
+    optimizer = torch.optim.SGD(
         model.parameters(),
-        lr=0.1,
-        momentum=0.9,
-        nesterov=True,
-        weight_decay=5e-4
+        lr=lr,
+        momentum=momentum,
+        nesterov=nesterov,
+        weight_decay=weight_decay
     )
 
     criterion = nn.CrossEntropyLoss()
