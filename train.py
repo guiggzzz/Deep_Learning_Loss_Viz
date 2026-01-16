@@ -44,6 +44,8 @@ if __name__ == "__main__":
     epochs = config["training"]["epochs"]
     lr = config["training"]["lr"]
     momentum = config["training"]["momentum"]
+    nesterov = config["training"]["nesterov"]
+    weight_decay = config["training"]["weight_decay"]
 
     # -------- Device --------
     device = config["training"]["device"]
@@ -80,10 +82,12 @@ if __name__ == "__main__":
     # ---------------------------
     # Optimisation
     # ---------------------------
-    optimizer = optim.SGD(
+    torch.optim.SGD(
         model.parameters(),
-        lr=lr,
-        momentum=momentum
+        lr=0.1,
+        momentum=0.9,
+        nesterov=True,
+        weight_decay=5e-4
     )
 
     criterion = nn.CrossEntropyLoss()
