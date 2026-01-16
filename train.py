@@ -97,39 +97,39 @@ if __name__ == "__main__":
     # Entraînement
     # ---------------------------
     model.train()
-for epoch in range(epochs):
-    running_loss = 0.0
-    all_preds = []
-    all_targets = []
+    for epoch in range(epochs):
+        running_loss = 0.0
+        all_preds = []
+        all_targets = []
 
-    for x, y in train_loader:
-        x, y = x.to(device), y.to(device)
+        for x, y in train_loader:
+            x, y = x.to(device), y.to(device)
 
-        optimizer.zero_grad()
-        logits = model(x)
-        loss = criterion(logits, y)
-        loss.backward()
-        optimizer.step()
+            optimizer.zero_grad()
+            logits = model(x)
+            loss = criterion(logits, y)
+            loss.backward()
+            optimizer.step()
 
-        running_loss += loss.item()
+            running_loss += loss.item()
 
-        preds = torch.argmax(logits, dim=1)
-        all_preds.append(preds.detach().cpu())
-        all_targets.append(y.detach().cpu())
+            preds = torch.argmax(logits, dim=1)
+            all_preds.append(preds.detach().cpu())
+            all_targets.append(y.detach().cpu())
 
-    avg_loss = running_loss / len(train_loader)
-    loss_history.append(avg_loss)
+        avg_loss = running_loss / len(train_loader)
+        loss_history.append(avg_loss)
 
-    all_preds = torch.cat(all_preds).numpy()
-    all_targets = torch.cat(all_targets).numpy()
+        all_preds = torch.cat(all_preds).numpy()
+        all_targets = torch.cat(all_targets).numpy()
 
-    f1 = f1_score(all_targets, all_preds, average="macro")
-    f1_history.append(f1)
+        f1 = f1_score(all_targets, all_preds, average="macro")
+        f1_history.append(f1)
 
-    print(
-        f"[Epoch {epoch+1}/{epochs}] "
-        f"Loss: {avg_loss:.4f} | F1 (macro): {f1:.4f}"
-    )
+        print(
+            f"[Epoch {epoch+1}/{epochs}] "
+            f"Loss: {avg_loss:.4f} | F1 (macro): {f1:.4f}"
+        )
     # ---------------------------
     # Sauvegarde
     # ---------------------------
