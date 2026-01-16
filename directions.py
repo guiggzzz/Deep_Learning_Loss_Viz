@@ -11,18 +11,30 @@ from utils.checkpoint import load_checkpoint
 # Filter-wise random directions
 # ---------------------------
 def random_directions_filterwise(model):
-    """
-    Génère une direction aléatoire filter-wise
-    (Li et al., 2018).
-    """
     direction = []
+
     for p in model.parameters():
-        if p.ndim > 1:
-            r = torch.randn_like(p)
-            r *= p.norm() / (r.norm() + 1e-10)
-        else:
-            r = torch.zeros_like(p)
-        direction.append(r)
+        if p.ndim <= 1:
+            # biais, BN, etc.
+            direction.append(torch.zeros_like(p))
+            continue
+
+        # Génère direction brute
+        d = torch.randn_like(p)
+
+        # reshape : (out_channels, -1)
+        d_flat = d.view(d.size(0), -1)
+        p_flat = p.view(p.size(0), -1)
+
+        # normes par filtre
+        d_norm = torch.norm(d_flat, dim=1, keepdim=True)
+        p_norm = torch.norm(p_flat, dim=1, keepdim=True)
+
+        # filter-wise normalization
+        d_flat = d_flat / (d_norm + 1e-10) * p_norm
+
+        direction.append(d_flat.view_as(p))
+
     return direction
 
 # ---------------------------
