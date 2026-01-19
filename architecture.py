@@ -35,12 +35,6 @@ class BasicResBlock(nn.Module):
         else:
             self.shortcut = None  # pas de shortcut
 
-        if stride != 1 or in_ch != out_ch:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_ch, out_ch, 1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_ch)
-            )
-
     def forward(self, x):
         out = self.act(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
