@@ -54,7 +54,8 @@ class BasicResNet(nn.Module):
         blocks_per_stage,
         num_classes=10,
         use_skip=True,
-        activation=nn.ReLU
+        activation="relu",
+        dropout=0.0    # ← ajouter ici
     ):
         super().__init__()
         self.in_ch = 64
