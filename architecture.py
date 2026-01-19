@@ -63,10 +63,10 @@ class BasicResNet(nn.Module):
             self.act
         )
 
-        self.stage1 = self._make_stage(64,  blocks_per_stage[0], stride=1)
-        self.stage2 = self._make_stage(128, blocks_per_stage[1], stride=2)
-        self.stage3 = self._make_stage(256, blocks_per_stage[2], stride=2)
-        self.stage4 = self._make_stage(512, blocks_per_stage[3], stride=2)
+        self.stage1 = self._make_stage(64,  blocks_per_stage[0], stride=1, dropout=dropout)
+        self.stage2 = self._make_stage(128, blocks_per_stage[1], stride=2, dropout=dropout)
+        self.stage3 = self._make_stage(256, blocks_per_stage[2], stride=2, dropout=dropout)
+        self.stage4 = self._make_stage(512, blocks_per_stage[3], stride=2, dropout=dropout)
 
         self.pool = nn.AdaptiveAvgPool2d(1)
         self.fc   = nn.Linear(512, num_classes)
