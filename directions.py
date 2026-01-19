@@ -4,7 +4,7 @@ import yaml
 import torch
 
 
-from architecture import load_model
+from architecture import build_model
 from utils.checkpoint import load_checkpoint
 
 # ---------------------------
