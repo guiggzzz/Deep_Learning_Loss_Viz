@@ -9,7 +9,7 @@ from sklearn.metrics import f1_score
 
 from utils.data import get_cifar10_loader, extract_fixed_batches
 from utils.checkpoint import save_checkpoint
-from architecture import CustomCNN
+from architecture import build_model
 
 
 # ---------------------------
@@ -70,13 +70,11 @@ if __name__ == "__main__":
     # ---------------------------
     # Modèle
     # ---------------------------
-    model = CustomCNN(
-        depth=model_cfg["depth"],
-        width=model_cfg["width"],
-        use_skip=model_cfg["use_skip"],
-        use_bn=model_cfg["use_bn"],
+    model = build_model(
+        resnet=model_cfg["resnet"],
+        num_config=model_cfg["num_config"],
         activation=model_cfg["activation"],
-        dropout=model_cfg["dropout"]
+        dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
 
     # ---------------------------
