@@ -8,8 +8,8 @@ dataset:
 model:
   # ---- PARAMÈTRES QUI CHANGENT LE LOSS LANDSCAPE ----
   resnet: True        # profondeur (↑ = plus complexe)
-  use_skip: True     
-  num_config: "18"        # profondeur (↑ = plus complexe)
+  use_skip: False     
+  num_config: "56"        # profondeur (↑ = plus complexe)
   activation: relu  # relu | gelu | silu
   dropout: 0.0      # 0.0 | 0.5 → rugosité
 

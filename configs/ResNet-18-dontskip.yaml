@@ -8,7 +8,7 @@ dataset:
 model:
   resnet: True       
   num_config: "18"        
-  use_skip: True     
+  use_skip: False     
   activation: relu  
   dropout: 0.5    
 
