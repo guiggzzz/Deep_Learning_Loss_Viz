@@ -15,6 +15,7 @@ def get_activation(name):
 class BasicResBlock(nn.Module):
     def __init__(self, in_ch, out_ch, stride=1, use_skip=True, activation="relu", dropout=0.0):
         super().__init__()
+        self.use_skip = use_skip
         self.act = get_activation(activation)
         
         self.drop = nn.Dropout2d(dropout) if dropout > 0 else nn.Identity()
