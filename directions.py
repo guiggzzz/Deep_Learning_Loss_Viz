@@ -63,6 +63,7 @@ if __name__ == "__main__":
     model = build_model(
         resnet=model_cfg["resnet"],
         num_config=model_cfg["num_config"],
+        use_skip=model_cfg["use_skip"],
         activation=model_cfg["activation"],
         dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
