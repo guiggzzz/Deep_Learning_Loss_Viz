@@ -27,12 +27,12 @@ if __name__ == "__main__":
     os.makedirs(plots_dir, exist_ok=True)
 
     output_path = os.path.join(
-        plots_dir, f"loss_landscape_3D_{config_name}.png"
+        plots_dir, f"{config_name}.png"
     )
 
     # -------- Landscape params (dos.path.join(oivent matcher landscape.py) --------
-    alpha_range = (-1.0, 1.0)
-    beta_range  = (-1.0, 1.0)
+    alpha_range = (-1.5, 1.5)
+    beta_range  = (-1.5, 1.5)
     n_points = 25
 
     # -------- Load Z --------
