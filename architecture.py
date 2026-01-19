@@ -32,7 +32,7 @@ class BasicResBlock(nn.Module):
             else:
                 self.shortcut = nn.Identity()
         else:
-            self.shortcut = None
+            self.shortcut = None  # pas de shortcut
 
         if stride != 1 or in_ch != out_ch:
             self.shortcut = nn.Sequential(
@@ -109,7 +109,7 @@ class BasicResNet(nn.Module):
     
     
 class DenseBlock(nn.Module):
-    def __init__(self, in_ch, growth_rate, use_skip=True, activation="relu", dropout=0.0):
+    def __init__(self, in_ch, growth_rate, activation="relu", dropout=0.0):
         super().__init__()
         self.block = nn.Sequential(
             nn.BatchNorm2d(in_ch),
@@ -181,6 +181,16 @@ configs_resnet = {
 }
 def build_model(resnet, num_config, use_skip=True, activation="relu", dropout=0.0):
     if resnet:
-        return BasicResNet(configs_resnet[num_config], activation, dropout=dropout, use_skip=use_skip)
+        return BasicResNet(
+            blocks_per_stage=configs_resnet[num_config],
+            num_classes=10,
+            use_skip=use_skip,
+            activation=activation,
+            dropout=dropout
+        )
     else:
-        return BasicDenseNet(configs_dense_net[num_config], activation=activation, dropout=dropout)
+        return BasicDenseNet(
+            blocks=configs_dense_net[num_config],
+            activation=activation,
+            dropout=dropout
+        )
