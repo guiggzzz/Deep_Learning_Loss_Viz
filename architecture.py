@@ -71,13 +71,14 @@ class BasicResNet(nn.Module):
         self.pool = nn.AdaptiveAvgPool2d(1)
         self.fc   = nn.Linear(512, num_classes)
 
-    def _make_stage(self, out_ch, n_blocks, stride):
+    def _make_stage(self, out_ch, n_blocks, stride, dropout=0.0):
         layers = [
             BasicResBlock(
                 self.in_ch,
                 out_ch,
                 stride=stride,
-                use_skip=self.use_skip
+                use_skip=self.use_skip,
+                dropout=dropout
             )
         ]
         self.in_ch = out_ch
@@ -87,7 +88,8 @@ class BasicResNet(nn.Module):
                 BasicResBlock(
                     out_ch,
                     out_ch,
-                    use_skip=self.use_skip
+                    use_skip=self.use_skip,
+                    dropout=dropout
                 )
             )
 
