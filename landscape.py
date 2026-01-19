@@ -50,8 +50,9 @@ if __name__ == "__main__":
 
     # -------- Hyperparams paysage --------
     n_points = 25
-    alpha_range = (-1.5, 1.5)
-    beta_range = (-1.5, 1.5)
+    length = 1.0
+    alpha_range = (-length, length)
+    beta_range  = (-length, length)
 
     # -------- Model --------
     model = build_model(

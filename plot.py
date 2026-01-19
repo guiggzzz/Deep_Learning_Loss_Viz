@@ -31,8 +31,9 @@ if __name__ == "__main__":
     )
 
     # -------- Landscape params (dos.path.join(oivent matcher landscape.py) --------
-    alpha_range = (-1.5, 1.5)
-    beta_range  = (-1.5, 1.5)
+    length = 1.0
+    alpha_range = (-length, length)
+    beta_range  = (-length, length)
     n_points = 25
 
     # -------- Load Z --------
