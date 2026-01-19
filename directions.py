@@ -4,7 +4,7 @@ import yaml
 import torch
 
 
-from architecture import CustomCNN
+from architecture import load_model
 from utils.checkpoint import load_checkpoint
 
 # ---------------------------
@@ -60,13 +60,10 @@ if __name__ == "__main__":
         device = "cpu"
 
     # -------- Model --------
-    model = CustomCNN(
-        depth=model_cfg["depth"],
-        width=model_cfg["width"],
-        use_skip=model_cfg["use_skip"],
-        use_bn=model_cfg["use_bn"],
-        activation=model_cfg["activation"],
-        dropout=model_cfg["dropout"]
+    model = build_model(
+        resnet=model_cfg["resnet"],
+        num_config=model_cfg["num_config"],
+        activation=model_cfg["activation"]
     ).to(device)
 
     # -------- Checkpoint --------
