@@ -60,7 +60,7 @@ class BasicResNet(nn.Module):
         super().__init__()
         self.in_ch = 64
         self.use_skip = use_skip
-        self.act = activation()
+        self.act = get_activation(activation)
 
         self.stem = nn.Sequential(
             nn.Conv2d(3, 64, 3, padding=1, bias=False),
