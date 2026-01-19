@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # -------- Landscape params (dos.path.join(oivent matcher landscape.py) --------
     alpha_range = (-1.0, 1.0)
     beta_range  = (-1.0, 1.0)
-    n_points = 51
+    n_points = 25
 
     # -------- Load Z --------
     if not os.path.exists(input_path):
