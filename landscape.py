@@ -49,7 +49,7 @@ if __name__ == "__main__":
     output_path = f"plot_resources/Z_{config_name}.npy"
 
     # -------- Hyperparams paysage --------
-    n_points = 51
+    n_points = 25
     alpha_range = (-1.0, 1.0)
     beta_range = (-1.0, 1.0)
 
