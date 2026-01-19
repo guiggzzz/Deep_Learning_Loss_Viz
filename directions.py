@@ -63,8 +63,10 @@ if __name__ == "__main__":
     model = build_model(
         resnet=model_cfg["resnet"],
         num_config=model_cfg["num_config"],
-        activation=model_cfg["activation"]
+        activation=model_cfg["activation"],
+        dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
+
 
     # -------- Checkpoint --------
     checkpoint_path = f"models/{config_name}.pt"
