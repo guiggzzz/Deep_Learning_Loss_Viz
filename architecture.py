@@ -171,11 +171,11 @@ configs_dense_net = {
 configs_resnet = {
     "18":  [2, 2, 2, 2],   # ImageNet-style
     "34":  [3, 4, 6, 3],   # ImageNet-style
-    "20":  [3, 3, 3],
-    "32":  [5, 5, 5],
-    "44":  [7, 7, 7],
-    "56":  [9, 9, 9],
-    "110": [18, 18, 18],
+    "20":  [3, 3, 3, 3],
+    "32":  [5, 5, 5, 5],
+    "44":  [7, 7, 7, 7],
+    "56":  [9, 9, 9, 9],
+    "110": [18, 18, 18, 18],
 }
 def build_model(resnet, num_config, use_skip=True, activation="relu", dropout=0.0):
     if resnet:
