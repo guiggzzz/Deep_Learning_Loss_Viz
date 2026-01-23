@@ -1,7 +1,7 @@
 dataset:
   name: CIFAR10
   path: data/cifar10
-  batch_size: 128
+  batch_size: 256
   num_workers: 4
   n_fixed_batches: 50
 
