@@ -3,18 +3,18 @@ dataset:
   path: data/cifar10
   batch_size: 128
   num_workers: 4
-  n_fixed_batches: 5
+  n_fixed_batches: 50
 
 model:
   # ---- PARAMÈTRES QUI CHANGENT LE LOSS LANDSCAPE ----
   resnet: True        # profondeur (↑ = plus complexe)
   use_skip: True     
-  num_config: "18"        # profondeur (↑ = plus complexe)
+  num_config: "56"        # profondeur (↑ = plus complexe)
   activation: relu  # relu | gelu | silu
   dropout: 0.0      # 0.0 | 0.5 → rugosité
 
 training:
-  epochs: 5
+  epochs: 100
   lr: 0.1
   momentum: 0.9
   nesterov: true
