@@ -128,9 +128,9 @@ if __name__ == "__main__":
         all_preds = torch.cat(all_preds).numpy()
         all_targets = torch.cat(all_targets).numpy()
 
-    if epoch % 5 == 0:
-        f1 = f1_score(all_targets, all_preds, average="macro")
-        print(f"Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - F1 Macro: {f1:.4f}")
+        if epoch % 5 == 0:
+            f1 = f1_score(all_targets, all_preds, average="macro")
+            print(f"Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - F1 Macro: {f1:.4f}")
 
     # ---------------------------
     # Sauvegarde
