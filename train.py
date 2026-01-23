@@ -67,11 +67,7 @@ if __name__ == "__main__":
         shuffle=True,
         num_workers=num_workers
     )
-
-    train_loader = extract_fixed_batches(
-        train_loader,
-        n_fixed_batches
-    )
+ 
 
     # ---------------------------
     # Modèle
