@@ -131,6 +131,7 @@ if __name__ == "__main__":
         if epoch % 5 == 0:
             f1 = f1_score(all_targets, all_preds, average="macro")
             print(f"Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - F1 Macro: {f1:.4f}")
+    f1 = f1_score(all_targets, all_preds, average="macro")
 
     # ---------------------------
     # Sauvegarde
@@ -166,8 +167,7 @@ if __name__ == "__main__":
 
         # Metrics
         ("final_loss", loss_history[-1]),
-        ("final_f1_macro", f1_history[-1]),
-        ("best_f1_macro", max(f1_history)),
+        ("final_f1_macro", f1),
     ]
 
     with open(csv_path, mode="w", newline="") as f:
