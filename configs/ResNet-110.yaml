@@ -1,0 +1,22 @@
+dataset:
+  name: CIFAR10
+  path: data/cifar10
+  batch_size: 128
+  num_workers: 4
+  n_fixed_batches: 5
+
+model:
+  # ---- PARAMÈTRES QUI CHANGENT LE LOSS LANDSCAPE ----
+  resnet: True        # profondeur (↑ = plus complexe)
+  use_skip: True     
+  num_config: "110"        # profondeur (↑ = plus complexe)
+  activation: relu  # relu | gelu | silu
+  dropout: 0.0      # 0.0 | 0.5 → rugosité
+
+training:
+  epochs: 5
+  lr: 0.1
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0005
+  device: cuda   # if available, else cpu is automatic
