@@ -76,7 +76,7 @@ if __name__ == "__main__":
     # Hyperparams landscape
     # ---------------------------
     n_points = 21                 # 21x21 = 441 points
-    length = 0.5
+    length = 1.0
     alpha_range = (-length, length)
     beta_range  = (-length, length)
 
