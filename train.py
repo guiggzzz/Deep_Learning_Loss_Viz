@@ -139,42 +139,42 @@ if __name__ == "__main__":
     save_checkpoint(model, optimizer, checkpoint_path)
 
     # ---------------------------
-# Sauvegarde des caractéristiques du modèle en CSV
-# ---------------------------
-csv_path = checkpoint_path.replace(".pt", "_summary.csv")
+    # Sauvegarde des caractéristiques du modèle en CSV
+    # ---------------------------
+    csv_path = checkpoint_path.replace(".pt", "_summary.csv")
 
-summary_data = [
-    # Dataset
-    ("dataset_batch_size", batch_size),
-    ("dataset_num_workers", num_workers),
-    ("dataset_n_fixed_batches", n_fixed_batches),
+    summary_data = [
+        # Dataset
+        ("dataset_batch_size", batch_size),
+        ("dataset_num_workers", num_workers),
+        ("dataset_n_fixed_batches", n_fixed_batches),
 
-    # Training
-    ("training_epochs", epochs),
-    ("training_lr", lr),
-    ("training_momentum", momentum),
-    ("training_nesterov", nesterov),
-    ("training_weight_decay", weight_decay),
-    ("training_device", device),
+        # Training
+        ("training_epochs", epochs),
+        ("training_lr", lr),
+        ("training_momentum", momentum),
+        ("training_nesterov", nesterov),
+        ("training_weight_decay", weight_decay),
+        ("training_device", device),
 
-    # Model
-    ("model_resnet", model_cfg["resnet"]),
-    ("model_num_config", model_cfg["num_config"]),
-    ("model_use_skip", model_cfg["use_skip"]),
-    ("model_activation", model_cfg["activation"]),
-    ("model_dropout", model_cfg.get("dropout", 0.0)),
+        # Model
+        ("model_resnet", model_cfg["resnet"]),
+        ("model_num_config", model_cfg["num_config"]),
+        ("model_use_skip", model_cfg["use_skip"]),
+        ("model_activation", model_cfg["activation"]),
+        ("model_dropout", model_cfg.get("dropout", 0.0)),
 
-    # Metrics
-    ("final_loss", loss_history[-1]),
-    ("final_f1_macro", f1_history[-1]),
-    ("best_f1_macro", max(f1_history)),
-]
+        # Metrics
+        ("final_loss", loss_history[-1]),
+        ("final_f1_macro", f1_history[-1]),
+        ("best_f1_macro", max(f1_history)),
+    ]
 
-with open(csv_path, mode="w", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow(["parameter", "value"])
-    writer.writerows(summary_data)
+    with open(csv_path, mode="w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["parameter", "value"])
+        writer.writerows(summary_data)
 
-print(f"[INFO] Model summary saved to {csv_path}")
+    print(f"[INFO] Model summary saved to {csv_path}")
 
 
