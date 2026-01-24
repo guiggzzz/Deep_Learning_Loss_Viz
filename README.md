@@ -26,20 +26,6 @@ python landscape.py <config_name>   # Compute landscape
 python plot.py <config_name>        # Create visualization
 ```
 
-### Advanced Analysis
-
-```bash
-# Compute metrics (sharpness, convexity, F1 score)
-python analyze_metrics.py <config_name>
-
-# Enhanced plots with metrics overlay
-python plot_with_metrics.py <config_name>
-
-# Compare all configurations
-python analyze_metrics.py all
-python plot_with_metrics.py all
-```
-
 ## Configuration
 
 Create YAML files in `configs/` to define model architectures:
