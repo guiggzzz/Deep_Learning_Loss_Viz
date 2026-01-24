@@ -57,7 +57,6 @@ dataset:
 ├── train.py              # Training script
 ├── directions.py         # Generate random directions
 ├── landscape.py          # Loss landscape computation
-├── analyze_metrics.py    # Compute landscape metrics
 ├── plot.py               # Basic visualization
 ├── main.py               # Pipeline orchestrator
 └── utils/                # Data loading & checkpoints
