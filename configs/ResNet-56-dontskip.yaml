@@ -3,7 +3,7 @@ dataset:
   path: data/cifar10
   batch_size: 256
   num_workers: 4
-  n_fixed_batches: 50
+  n_fixed_batches: 5
 
 model:
   # ---- PARAMÈTRES QUI CHANGENT LE LOSS LANDSCAPE ----

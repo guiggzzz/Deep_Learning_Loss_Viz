@@ -3,12 +3,9 @@ import sys
 import yaml
 import torch
 import numpy as np
-
-# --- Ajouter racine du projet ---
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-
 from architecture import build_model
 from utils.checkpoint import load_checkpoint
+from utils.data import get_cifar10_loader, extract_fixed_batches
 
 # ============================================================
 # Utils : flatten / unflatten paramètres
@@ -17,12 +14,10 @@ from utils.checkpoint import load_checkpoint
 def flatten_params(params):
     return torch.cat([p.detach().flatten() for p in params])
 
-
 def get_shapes_and_sizes(params):
     shapes = [p.shape for p in params]
     sizes = [p.numel() for p in params]
     return shapes, sizes
-
 
 def set_params_from_flat(model, theta_flat, shapes, sizes):
     idx = 0
@@ -31,13 +26,11 @@ def set_params_from_flat(model, theta_flat, shapes, sizes):
             p.copy_(theta_flat[idx:idx + size].view(shape))
             idx += size
 
-
 # ============================================================
 # Main
 # ============================================================
 
 if __name__ == "__main__":
-
     # ---------------------------
     # Config
     # ---------------------------
@@ -46,42 +39,34 @@ if __name__ == "__main__":
 
     ROOT_DIR = os.path.dirname(__file__)
     config_path = os.path.join(ROOT_DIR, "configs", f"{config_name}.yaml")
-
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
     model_cfg = config["model"]
     train_cfg = config["training"]
+    dataset_cfg = config["dataset"]
 
-    # ---------------------------
-    # Device
-    # ---------------------------
     device = train_cfg["device"]
     if device == "cuda" and not torch.cuda.is_available():
         device = "cpu"
-
     print(f"[INFO] Device : {device}")
 
     # ---------------------------
-    # Paths
+    # Dataset
     # ---------------------------
-    checkpoint_path = f"models/{config_name}.pt"
-    fixed_batches_path = "data/fixed_batches.pt"
-    directions_path = f"plot_resources/directions_{config_name}.pt"
-    output_path = f"plot_resources/Z_{config_name}.npy"
+    train_loader = get_cifar10_loader(
+        batch_size=dataset_cfg["batch_size"],
+        shuffle=True,
+        num_workers=0  # Pas besoin de parallélisme pour plot
+    )
 
-    os.makedirs("plot_resources", exist_ok=True)
-
-    # ---------------------------
-    # Hyperparams landscape
-    # ---------------------------
-    n_points = 21                 # 21x21 = 441 points
-    length = 1.0
-    alpha_range = (-length, length)
-    beta_range  = (-length, length)
+    # Prendre seulement un sous-ensemble fixe pour le plot
+    fixed_batches = extract_fixed_batches(train_loader, dataset_cfg["n_fixed_batches"])
+    fixed_batches = [(x.to(device), y.to(device)) for x, y in fixed_batches]
+    print(f"[INFO] Using {len(fixed_batches)} fixed batches for plot")
 
     # ---------------------------
-    # Model
+    # Modèle
     # ---------------------------
     model = build_model(
         resnet=model_cfg["resnet"],
@@ -91,35 +76,10 @@ if __name__ == "__main__":
         dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
 
+    # Charger checkpoint si besoin
+    checkpoint_path = f"models/{config_name}.pt"
     model, _ = load_checkpoint(model, checkpoint_path)
     model.eval()
-
-    # ---------------------------
-    # Fixed batches
-    # ---------------------------
-    fixed_batches = torch.load(fixed_batches_path)
-    fixed_batches = [(x.to(device), y.to(device)) for x, y in fixed_batches]
-
-    # 👉 Suffisant pour un landscape propre
-    fixed_batches = fixed_batches[:2]
-
-    print(f"[INFO] Using {len(fixed_batches)} fixed batches")
-
-    # ---------------------------
-    # Directions
-    # ---------------------------
-    directions = torch.load(directions_path)
-    delta = directions["delta"]
-    eta   = directions["eta"]
-
-    # ---------------------------
-    # Flatten everything
-    # ---------------------------
-    theta_star = flatten_params(model.parameters()).to(device)
-    delta = flatten_params(delta).to(device)
-    eta   = flatten_params(eta).to(device)
-
-    shapes, sizes = get_shapes_and_sizes(model.parameters())
 
     # ---------------------------
     # Loss
@@ -127,22 +87,33 @@ if __name__ == "__main__":
     loss_fn = torch.nn.CrossEntropyLoss()
 
     # ---------------------------
-    # Grid
+    # Directions pour loss landscape
     # ---------------------------
-    alphas = np.linspace(alpha_range[0], alpha_range[1], n_points)
-    betas  = np.linspace(beta_range[0], beta_range[1], n_points)
+    directions_path = f"plot_resources/directions_{config_name}.pt"
+    directions = torch.load(directions_path)
+    delta = flatten_params(directions["delta"]).to(device)
+    eta   = flatten_params(directions["eta"]).to(device)
 
+    # Flatten paramètres actuels
+    theta_star = flatten_params(model.parameters()).to(device)
+    shapes, sizes = get_shapes_and_sizes(model.parameters())
+
+    # ---------------------------
+    # Grid pour landscape
+    # ---------------------------
+    n_points = 21
+    length = 1.0
+    alphas = np.linspace(-length, length, n_points)
+    betas  = np.linspace(-length, length, n_points)
     Z = np.zeros((n_points, n_points))
 
     # ---------------------------
-    # Landscape computation
+    # Calcul du landscape
     # ---------------------------
     print("[INFO] Computing loss landscape...")
-
     with torch.no_grad():
         for i, a in enumerate(alphas):
             for j, b in enumerate(betas):
-
                 theta = theta_star + a * delta + b * eta
                 set_params_from_flat(model, theta, shapes, sizes)
 
@@ -156,7 +127,9 @@ if __name__ == "__main__":
                 print(f"[INFO] Row {i+1}/{n_points} done")
 
     # ---------------------------
-    # Save
+    # Sauvegarde
     # ---------------------------
+    output_path = f"plot_resources/Z_{config_name}.npy"
+    os.makedirs("plot_resources", exist_ok=True)
     np.save(output_path, Z)
     print(f"[INFO] Loss landscape saved to {output_path}")
