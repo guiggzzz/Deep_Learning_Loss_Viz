@@ -57,7 +57,7 @@ if __name__ == "__main__":
     train_loader = get_cifar10_loader(
         batch_size=dataset_cfg["batch_size"],
         shuffle=True,
-        num_workers=1
+        num_workers=1  # Pas besoin de parallélisme pour plot
     )
 
     # Prendre seulement un sous-ensemble fixe pour le plot
