@@ -53,23 +53,23 @@ class BasicResNet(nn.Module):
         dropout=0.0    # ← ajouter ici
     ):
         super().__init__()
-        self.in_ch = 64
+        self.in_ch = 32
         self.use_skip = use_skip
         self.act = get_activation(activation)
 
         self.stem = nn.Sequential(
-            nn.Conv2d(3, 64, 3, padding=1, bias=False),
-            nn.BatchNorm2d(64),
+            nn.Conv2d(3, 32, 3, padding=1, bias=False),
+            nn.BatchNorm2d(32),
             self.act
         )
 
-        self.stage1 = self._make_stage(64,  blocks_per_stage[0], stride=1, dropout=dropout)
-        self.stage2 = self._make_stage(128, blocks_per_stage[1], stride=2, dropout=dropout)
-        self.stage3 = self._make_stage(256, blocks_per_stage[2], stride=2, dropout=dropout)
-        self.stage4 = self._make_stage(512, blocks_per_stage[3], stride=2, dropout=dropout)
+        self.stage1 = self._make_stage(32,  blocks_per_stage[0], stride=1, dropout=dropout)
+        self.stage2 = self._make_stage(64, blocks_per_stage[1], stride=2, dropout=dropout)
+        self.stage3 = self._make_stage(128, blocks_per_stage[2], stride=2, dropout=dropout)
+        self.stage4 = self._make_stage(256, blocks_per_stage[3], stride=2, dropout=dropout)
 
         self.pool = nn.AdaptiveAvgPool2d(1)
-        self.fc   = nn.Linear(512, num_classes)
+        self.fc   = nn.Linear(256, num_classes)
 
     def _make_stage(self, out_ch, n_blocks, stride, dropout=0.0):
         layers = [
@@ -162,15 +162,13 @@ class BasicDenseNet(nn.Module):
         x = F.adaptive_avg_pool2d(x, 1).flatten(1)
         return self.fc(x)
     
-
-
 configs_dense_net = {
     "121": [6, 12, 24, 16],
     "169": [6, 12, 32, 32],
 }
 configs_resnet = {
-    "18":  [2, 2, 2, 2],   # ImageNet-style
-    "34":  [3, 4, 6, 3],   # ImageNet-style
+    "18":  [2, 2, 2, 2],  
+    "34":  [3, 4, 6, 3],   
     "20":  [3, 3, 3, 3],
     "32":  [5, 5, 5, 5],
     "44":  [7, 7, 7, 7],
