@@ -91,6 +91,12 @@ if __name__ == "__main__":
         weight_decay=weight_decay
     )
 
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(
+        optimizer,
+        milestones=[epochs//2, (3*epochs)//4],  # Réduit LR à epoch 100 et 150
+        gamma=0.1
+    )
+
     criterion = nn.CrossEntropyLoss()
     f1_history = []
     loss_history = []
@@ -120,6 +126,8 @@ if __name__ == "__main__":
 
         avg_loss = running_loss / len(train_loader)
         loss_history.append(avg_loss)
+
+        scheduler.step()
 
         all_preds = torch.cat(all_preds).numpy()
         all_targets = torch.cat(all_targets).numpy()
