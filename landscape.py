@@ -114,6 +114,10 @@ if __name__ == "__main__":
     with torch.no_grad():
         for i, a in enumerate(alphas):
             for j, b in enumerate(betas):
+
+                # 🔴 OBLIGATOIRE
+                set_params_from_flat(model, theta_star, shapes, sizes)
+
                 theta = theta_star + a * delta + b * eta
                 set_params_from_flat(model, theta, shapes, sizes)
 
