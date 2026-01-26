@@ -1,0 +1,15 @@
+# Exclusions critiques
+__pycache__/
+*.py[cod]
+key*
+*.Zone.Identifier
+.DS_Store
+venv/
+
+# Dataset (téléchargeable)
+training/data/cifar-10-batches-py/
+
+# Gros fichiers à régénérer
+models/*.pt
+plot_resources/*.npy
+!plot_resources/directions_*.pt
