@@ -6,17 +6,16 @@ dataset:
   n_fixed_batches: 5
 
 model:
-  # ---- PARAMÈTRES QUI CHANGENT LE LOSS LANDSCAPE ----
-  resnet: True        # profondeur (↑ = plus complexe)
+  resnet: True        
   use_skip: True     
-  num_config: "18"        # profondeur (↑ = plus complexe)
-  activation: relu  # relu | gelu | silu
-  dropout: 0.0      # 0.0 | 0.5 → rugosité
+  num_config: "56"        
+  activation: relu  
+  dropout: 0     
 
 training:
-  epochs: 5
+  epochs: 15
   lr: 0.1
   momentum: 0.9
   nesterov: true
   weight_decay: 0.0005
-  device: cuda   # if available, else cpu is automatic
+  device: cuda   

@@ -6,16 +6,16 @@ dataset:
   n_fixed_batches: 5
 
 model:
-  resnet: True       
-  num_config: "18"        
+  resnet: True        
   use_skip: True     
+  num_config: "18"        
   activation: relu  
-  dropout: 0.5    
+  dropout: 0.5      
 
 training:
-  epochs: 5
+  epochs: 15
   lr: 0.1
   momentum: 0.9
   nesterov: true
   weight_decay: 0.0005
-  device: cuda   # if available, else cpu is automatic
+  device: cuda   

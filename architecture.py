@@ -162,19 +162,16 @@ class BasicDenseNet(nn.Module):
     
 
 
-configs_dense_net = {
-    "121": [6, 12, 24, 16],
-    "169": [6, 12, 32, 32],
+configs_densenet = {
+    "63":  [6, 12, 24, 16],  
+    "87":  [6, 12, 32, 32],  
 }
 configs_resnet = {
-    "18":  [2, 2, 2, 2],   # ImageNet-style
-    "34":  [3, 4, 6, 3],   # ImageNet-style
-    "20":  [3, 3, 3],
-    "32":  [5, 5, 5],
-    "44":  [7, 7, 7],
-    "56":  [9, 9, 9],
-    "110": [18, 18, 18],
+    "18":  [2, 2, 2, 2],   
+    "56":  [9, 9, 9, 9],
 }
+
+
 def build_model(resnet, num_config, use_skip=True, activation="relu", dropout=0.0):
     if resnet:
         return BasicResNet(
@@ -186,7 +183,7 @@ def build_model(resnet, num_config, use_skip=True, activation="relu", dropout=0.
         )
     else:
         return BasicDenseNet(
-            blocks=configs_dense_net[num_config],
+            blocks=configs_densenet[num_config],
             activation=activation,
             dropout=dropout
         )

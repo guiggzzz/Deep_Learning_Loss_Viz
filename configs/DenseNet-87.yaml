@@ -6,11 +6,11 @@ dataset:
   n_fixed_batches: 5
 
 model:
-  resnet: True        
-  use_skip: False     
-  num_config: "18"        
+  resnet: False        
+  use_skip: True     
+  num_config: "87"        
   activation: relu  
-  dropout: 0      
+  dropout: 0     
 
 training:
   epochs: 15
