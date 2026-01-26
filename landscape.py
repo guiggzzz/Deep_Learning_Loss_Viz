@@ -102,7 +102,7 @@ if __name__ == "__main__":
     # Grid pour landscape
     # ---------------------------
     n_points = 21
-    length = 1.0
+    length = 10
     alphas = np.linspace(-length, length, n_points)
     betas  = np.linspace(-length, length, n_points)
     Z = np.zeros((n_points, n_points))

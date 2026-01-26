@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     # -------- Landscape params (dos.path.join(oivent matcher landscape.py) --------
     n_points = 21                 # 21x21 = 441 points
-    length = 1.
+    length = 10
     alpha_range = (-length, length)
     beta_range  = (-length, length)
 

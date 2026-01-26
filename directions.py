@@ -138,7 +138,7 @@ if __name__ == "__main__":
     # OPTION: Choisir si on ignore BN/bias ou non
     # ignore_bn_bias=True  -> Directions nulles pour BN/bias (comme le papier original)
     # ignore_bn_bias=False -> Directions normalisées pour tous les paramètres
-    IGNORE_BN_BIAS = True  # Changez à False pour tester
+    IGNORE_BN_BIAS = False  # Changez à False pour tester
 
     if os.path.exists(directions_path):
         print("[INFO] Loading existing directions...")
