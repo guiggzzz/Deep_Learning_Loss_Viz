@@ -31,22 +31,26 @@ python plot.py <config_name>        # Create visualization
 Create YAML files in `configs/` to define model architectures:
 
 ```yaml
-model:
-  resnet: true              # true=ResNet, false=DenseNet
-  num_config: "18"          # 18, 34, 56, 110, 121, 169
-  use_skip: true            # Enable skip connections
-  activation: "relu"        # relu, gelu, silu
-  dropout: 0.0
-
-training:
-  epochs: 100
-  lr: 0.1
-  momentum: 0.9
-  device: "cuda"
-
 dataset:
+  name: CIFAR10
+  path: data/cifar10
   batch_size: 128
   num_workers: 4
+  n_fixed_batches: 5
+
+model:
+  nn_architecture: "ResNet"       
+  num_config: "18"        
+  activation: relu  
+  dropout: 0.0    
+
+training:
+  epochs: 5
+  lr: 0.1
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0005
+  device: cuda   # if available, else cpu is automatic
 ```
 
 ## Project Structure
