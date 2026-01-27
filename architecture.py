@@ -94,8 +94,6 @@ class BasicResNet(nn.Module):
         x = self.stage4(x)
         x = self.pool(x).flatten(1)
         return self.fc(x)
-
-    
     
 class DenseBlock(nn.Module):
     def __init__(self, in_ch, growth_rate, activation="relu", dropout=0.0):
@@ -201,8 +199,6 @@ configs_vgg = {
     "16": [2, 2, 3, 3, 3],
     "19": [2, 2, 4, 4, 4],
 }
-
-
 
 def build_model(nn_architecture, num_config, use_skip=True, activation="relu", dropout=0.0):
     if nn_architecture == "ResNet":
