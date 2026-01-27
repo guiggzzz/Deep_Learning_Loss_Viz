@@ -41,7 +41,6 @@ $RECYCLE.BIN/
 *.xz
 
 data/
-*.tar.gz
 
 ############################
 # TEMP / LOGS
