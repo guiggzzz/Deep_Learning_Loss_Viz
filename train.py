@@ -12,7 +12,6 @@ from utils.data import get_cifar10_loader, extract_fixed_batches
 from utils.checkpoint import save_checkpoint
 from architecture import build_model
 
-
 # ---------------------------
 # Reproductibilité (IMPORTANT)
 # ---------------------------
@@ -73,9 +72,8 @@ if __name__ == "__main__":
     # Modèle
     # ---------------------------
     model = build_model(
-        resnet=model_cfg["resnet"],
+        nn_architecture=model_cfg["nn_architecture"],
         num_config=model_cfg["num_config"],
-        use_skip=model_cfg["use_skip"],
         activation=model_cfg["activation"],
         dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
@@ -163,9 +161,8 @@ if __name__ == "__main__":
         ("training_device", device),
 
         # Model
-        ("model_resnet", model_cfg["resnet"]),
+        ("model_nn_architecture", model_cfg["nn_architecture"]),
         ("model_num_config", model_cfg["num_config"]),
-        ("model_use_skip", model_cfg["use_skip"]),
         ("model_activation", model_cfg["activation"]),
         ("model_dropout", model_cfg.get("dropout", 0.0)),
 

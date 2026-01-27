@@ -13,9 +13,8 @@ def get_activation(name):
         raise ValueError(f"Unknown activation {name}")
 
 class BasicResBlock(nn.Module):
-    def __init__(self, in_ch, out_ch, stride=1, use_skip=True, activation="relu", dropout=0.0):
+    def __init__(self, in_ch, out_ch, stride=1, activation="relu", dropout=0.0):
         super().__init__()
-        self.use_skip = use_skip
         self.act = get_activation(activation)
         
         self.drop = nn.Dropout2d(dropout) if dropout > 0 else nn.Identity()
@@ -24,22 +23,18 @@ class BasicResBlock(nn.Module):
         self.conv2 = nn.Conv2d(out_ch, out_ch, 3, padding=1, bias=False)
         self.bn2   = nn.BatchNorm2d(out_ch)
 
-        if use_skip:
-            if stride != 1 or in_ch != out_ch:
-                self.shortcut = nn.Sequential(
-                    nn.Conv2d(in_ch, out_ch, 1, stride=stride, bias=False),
-                    nn.BatchNorm2d(out_ch)
-                )
-            else:
-                self.shortcut = nn.Identity()
+        if stride != 1 or in_ch != out_ch:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_ch, out_ch, 1, stride=stride, bias=False),
+                nn.BatchNorm2d(out_ch)
+            )
         else:
-            self.shortcut = None  # pas de shortcut
+            self.shortcut = nn.Identity()
 
     def forward(self, x):
         out = self.act(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
-        if self.use_skip:
-            out = out + self.shortcut(x)
+        out = out + self.shortcut(x)
         return self.act(out)
 
 
@@ -48,13 +43,11 @@ class BasicResNet(nn.Module):
         self,
         blocks_per_stage,
         num_classes=10,
-        use_skip=True,
         activation="relu",
         dropout=0.0    # ← ajouter ici
     ):
         super().__init__()
         self.in_ch = 32
-        self.use_skip = use_skip
         self.act = get_activation(activation)
 
         self.stem = nn.Sequential(
@@ -77,7 +70,6 @@ class BasicResNet(nn.Module):
                 self.in_ch,
                 out_ch,
                 stride=stride,
-                use_skip=self.use_skip,
                 dropout=dropout
             )
         ]
@@ -88,7 +80,6 @@ class BasicResNet(nn.Module):
                 BasicResBlock(
                     out_ch,
                     out_ch,
-                    use_skip=self.use_skip,
                     dropout=dropout
                 )
             )
@@ -161,32 +152,75 @@ class BasicDenseNet(nn.Module):
         x = self.act(self.bn(x))
         x = F.adaptive_avg_pool2d(x, 1).flatten(1)
         return self.fc(x)
+
+
+class BasicVGG(nn.Module):
+    def __init__(self, config, activation="relu", dropout=0.0):
+        super().__init__()
+        
+        layers = []
+        in_ch = 3
+        channels = [64, 128, 256, 512, 512]
+        
+        for i, num_blocks in enumerate(config):
+            out_ch = channels[i]
+            for _ in range(num_blocks):
+                layers.append(nn.Conv2d(in_ch, out_ch, 3, padding=1))
+                layers.append(nn.BatchNorm2d(out_ch))
+                layers.append(get_activation(activation))
+                if dropout > 0:
+                    layers.append(nn.Dropout2d(dropout))
+                in_ch = out_ch
+            layers.append(nn.MaxPool2d(2, 2))
+        
+        self.features = nn.Sequential(*layers)
+        self.classifier = nn.Sequential(
+            nn.Linear(512, 512),
+            get_activation(activation),
+            nn.Dropout(dropout) if dropout > 0 else nn.Identity(),
+            nn.Linear(512, 10)
+        )
     
-configs_dense_net = {
+    def forward(self, x):
+        x = self.features(x)
+        x = F.adaptive_avg_pool2d(x, 1).flatten(1)
+        return self.classifier(x)
+
+    
+configs_resnet = {
+    "18":  [2, 2, 2, 2],
+    "34":  [3, 4, 6, 3],
+}
+
+configs_densenet = {
     "121": [6, 12, 24, 16],
     "169": [6, 12, 32, 32],
 }
-configs_resnet = {
-    "18":  [2, 2, 2, 2],  
-    "34":  [3, 4, 6, 3],   
-    "20":  [3, 3, 3, 3],
-    "32":  [5, 5, 5, 5],
-    "44":  [7, 7, 7, 7],
-    "56":  [9, 9, 9, 9],
-    "110": [18, 18, 18, 18],
+
+configs_vgg = {
+    "16": [2, 2, 3, 3, 3],
+    "19": [2, 2, 4, 4, 4],
 }
-def build_model(resnet, num_config, use_skip=True, activation="relu", dropout=0.0):
-    if resnet:
+
+
+
+def build_model(nn_architecture, num_config, use_skip=True, activation="relu", dropout=0.0):
+    if nn_architecture == "ResNet":
         return BasicResNet(
             blocks_per_stage=configs_resnet[num_config],
             num_classes=10,
-            use_skip=use_skip,
             activation=activation,
             dropout=dropout
         )
-    else:
+    elif nn_architecture == "DenseNet":
         return BasicDenseNet(
-            blocks=configs_dense_net[num_config],
+            blocks=configs_densenet[num_config],
+            activation=activation,
+            dropout=dropout
+        )
+    elif nn_architecture == "VGG":
+        return BasicVGG(
+            config=configs_vgg[num_config],
             activation=activation,
             dropout=dropout
         )

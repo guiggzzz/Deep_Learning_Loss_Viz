@@ -4,7 +4,6 @@ import yaml
 import numpy as np
 import matplotlib
 
-# Backend non-interactif (serveur / cluster)
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 

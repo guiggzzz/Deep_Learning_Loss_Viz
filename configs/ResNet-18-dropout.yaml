@@ -6,9 +6,8 @@ dataset:
   n_fixed_batches: 5
 
 model:
-  resnet: True       
+  nn_architecture: "ResNet"       
   num_config: "18"        
-  use_skip: True     
   activation: relu  
   dropout: 0.5    
 

@@ -6,8 +6,8 @@ dataset:
   n_fixed_batches: 5
 
 model:
-  nn_architecture: "ResNet"       
-  num_config: "18"        
+  nn_architecture: "VGG"       
+  num_config: "16"        
   activation: relu  
   dropout: 0.0    
 

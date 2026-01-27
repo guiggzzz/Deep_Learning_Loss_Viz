@@ -6,16 +6,14 @@ from architecture import build_model
 from utils.checkpoint import load_checkpoint
 
 # ---------------------------
-# Filter-wise random directions (CORRIGÉ)
+# Filter-wise random directions 
 # ---------------------------
-def random_directions_filterwise(model, ignore_bn_bias=True):
+def random_directions_filterwise(model):
     """
     Génère des directions aléatoires normalisées filter-wise.
     
     Args:
         model: Le modèle PyTorch
-        ignore_bn_bias: Si True, met des zéros pour BatchNorm et biais
-                       Si False, normalise aussi ces paramètres
     """
     direction = []
 
@@ -25,8 +23,7 @@ def random_directions_filterwise(model, ignore_bn_bias=True):
                          'bias' in name.lower() or 
                          'norm' in name.lower())
         
-        # Si on ignore BN/bias ET que c'est un paramètre BN/bias
-        if ignore_bn_bias and is_bn_or_bias:
+        if is_bn_or_bias:
             direction.append(torch.zeros_like(p))
             continue
 
@@ -56,45 +53,6 @@ def random_directions_filterwise(model, ignore_bn_bias=True):
     return direction
 
 
-def verify_directions(model, delta, eta):
-    """
-    Vérifie que les directions sont correctement normalisées.
-    """
-    print("\n=== Vérification des directions ===")
-    
-    total_params = 0
-    zero_params = 0
-    
-    for (name, p), d_delta, d_eta in zip(model.named_parameters(), delta, eta):
-        p_norm = p.norm().item()
-        d_delta_norm = d_delta.norm().item()
-        d_eta_norm = d_eta.norm().item()
-        
-        if d_delta.abs().max().item() == 0:
-            zero_params += 1
-            status = "❌ ZÉRO"
-        else:
-            status = "✓"
-        
-        total_params += 1
-        
-        ratio_delta = d_delta_norm / (p_norm + 1e-10)
-        ratio_eta = d_eta_norm / (p_norm + 1e-10)
-        
-        print(f"{status} {name:40s} | param_norm={p_norm:8.4f} | "
-              f"delta_norm={d_delta_norm:8.4f} (ratio={ratio_delta:.4f}) | "
-              f"eta_norm={d_eta_norm:8.4f} (ratio={ratio_eta:.4f})")
-    
-    print(f"\nRésumé: {zero_params}/{total_params} paramètres ont des directions nulles")
-    
-    if zero_params == total_params:
-        print("⚠️  ATTENTION: TOUTES les directions sont nulles!")
-    elif zero_params > total_params * 0.5:
-        print("⚠️  ATTENTION: Plus de 50% des directions sont nulles!")
-    else:
-        print("✓ Les directions semblent correctes")
-
-
 # ---------------------------
 # Main
 # ---------------------------
@@ -119,9 +77,8 @@ if __name__ == "__main__":
 
     # -------- Model --------
     model = build_model(
-        resnet=model_cfg["resnet"],
+        nn_architecture=model_cfg["nn_architecture"],
         num_config=model_cfg["num_config"],
-        use_skip=model_cfg["use_skip"],
         activation=model_cfg["activation"],
         dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
@@ -135,21 +92,16 @@ if __name__ == "__main__":
     os.makedirs("plot_resources", exist_ok=True)
     directions_path = f"plot_resources/directions_{config_name}.pt"
 
-    # OPTION: Choisir si on ignore BN/bias ou non
-    # ignore_bn_bias=True  -> Directions nulles pour BN/bias (comme le papier original)
-    # ignore_bn_bias=False -> Directions normalisées pour tous les paramètres
-    IGNORE_BN_BIAS = True  # Changez à False pour tester
-
     if os.path.exists(directions_path):
         print("[INFO] Loading existing directions...")
         directions = torch.load(directions_path, map_location=device)
         delta = directions["delta"]
         eta = directions["eta"]
     else:
-        print(f"[INFO] Generating filter-wise random directions (ignore_bn_bias={IGNORE_BN_BIAS})...")
+        print(f"[INFO] Generating filter-wise random directions")
         torch.manual_seed(0)  # Reproductibilité
-        delta = random_directions_filterwise(model, ignore_bn_bias=IGNORE_BN_BIAS)
-        eta = random_directions_filterwise(model, ignore_bn_bias=IGNORE_BN_BIAS)
+        delta = random_directions_filterwise(model)
+        eta = random_directions_filterwise(model)
 
         torch.save(
             {"delta": delta, "eta": eta},
@@ -157,7 +109,3 @@ if __name__ == "__main__":
         )
         print(f"[INFO] Directions saved to {directions_path}")
 
-    # -------- Vérification --------
-    verify_directions(model, delta, eta)
-    
-    print("\n[INFO] Directions ready!")

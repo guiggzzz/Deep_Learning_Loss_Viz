@@ -7,7 +7,7 @@ dataset:
 
 model:
   nn_architecture: "ResNet"       
-  num_config: "18"        
+  num_config: "34"        
   activation: relu  
   dropout: 0.0    
 

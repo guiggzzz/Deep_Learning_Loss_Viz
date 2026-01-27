@@ -69,9 +69,8 @@ if __name__ == "__main__":
     # Modèle
     # ---------------------------
     model = build_model(
-        resnet=model_cfg["resnet"],
+        nn_architecture=model_cfg["nn_architecture"],
         num_config=model_cfg["num_config"],
-        use_skip=model_cfg["use_skip"],
         activation=model_cfg["activation"],
         dropout=model_cfg.get("dropout", 0.0)
     ).to(device)
@@ -115,7 +114,6 @@ if __name__ == "__main__":
         for i, a in enumerate(alphas):
             for j, b in enumerate(betas):
 
-                # 🔴 OBLIGATOIRE
                 set_params_from_flat(model, theta_star, shapes, sizes)
 
                 theta = theta_star + a * delta + b * eta
