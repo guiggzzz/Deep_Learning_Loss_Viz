@@ -1,0 +1,101 @@
+############################
+# OS / SYSTEM FILES
+############################
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Zone.Identifier (Windows ADS)
+*:Zone.Identifier
+*.Zone.Identifier
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.nfs*
+
+############################
+# ARCHIVES / COMPRESSED FILES
+############################
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tbz
+*.tar.xz
+*.txz
+*.7z
+*.rar
+*.gz
+*.bz2
+*.xz
+
+data/
+*.tar.gz
+
+############################
+# TEMP / LOGS
+############################
+
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+
+############################
+# PYTHON (if relevant)
+############################
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.env
+.venv
+venv/
+env/
+pip-wheel-metadata/
+
+############################
+# DATA / NOTEBOOK ARTIFACTS
+############################
+
+.ipynb_checkpoints/
+*.csv~
+*.parquet~
+*.feather~
+*.h5~
+*.pkl~
+
+############################
+# BUILD / OUTPUT
+############################
+
+build/
+dist/
+out/
+target/
+*.exe
+*.dll
+*.so
+*.dylib
+
+############################
+# IDE / EDITORS
+############################
+
+.vscode/
+.idea/
+*.iml
+*.code-workspace
